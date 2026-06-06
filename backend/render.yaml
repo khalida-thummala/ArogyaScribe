@@ -1,0 +1,44 @@
+services:
+  - type: web
+    name: arogyascribe-backend
+    runtime: python
+    region: oregon
+    plan: starter
+    buildCommand: pip install -r requirements.txt
+    startCommand: uvicorn app.main:app --host 0.0.0.0 --port $PORT
+    envVars:
+      # ── Database ──────────────────────────────────────────────────────────
+      - key: DATABASE_URL
+        sync: false          # Set in Render dashboard: your Supabase PostgreSQL URL
+
+      # ── Auth ──────────────────────────────────────────────────────────────
+      - key: SECRET_KEY
+        sync: false          # Set in Render dashboard: long random string for JWT
+      - key: ALGORITHM
+        value: HS256
+
+      # ── Azure OpenAI ──────────────────────────────────────────────────────
+      - key: OPENAI_API_KEY
+        sync: false          # Set in Render dashboard: your Azure OpenAI key
+      - key: ENDPOINT
+        sync: false          # Set in Render dashboard: https://gpt5-azureai.cognitiveservices.azure.com/
+
+      # ── AssemblyAI — Speech Transcription ─────────────────────────────────
+      - key: ASSEMBLYAI_API_KEY
+        sync: false          # Set in Render dashboard: your AssemblyAI key
+
+      # ── Backblaze B2 — File Storage (audio + radiology images) ────────────
+      - key: B2_KEY_ID
+        sync: false          # Set in Render dashboard: your B2 key ID
+      - key: B2_APPLICATION_KEY
+        sync: false          # Set in Render dashboard: your B2 application key
+      - key: B2_ENDPOINT
+        value: https://s3.us-east-005.backblazeb2.com
+      - key: B2_BUCKET_NAME
+        value: mediscribe-audio
+
+      # ── Supabase (optional — only if used directly) ───────────────────────
+      - key: SUPABASE_URL
+        sync: false
+      - key: SUPABASE_SECRET_KEY
+        sync: false

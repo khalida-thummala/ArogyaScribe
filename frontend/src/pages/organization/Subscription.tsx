@@ -3,6 +3,8 @@ import { adminApi } from '@/api/admin'
 import { CreditCard, Building2, ShieldCheck, CheckCircle2 } from 'lucide-react'
 
 export default function OrganizationSubscription() {
+  
+  const [message, setMessage] = useState('')
   const [subscription, setSubscription] = useState<any>(null)
   const [loading, setLoading] = useState(true)
 
@@ -11,16 +13,47 @@ export default function OrganizationSubscription() {
   }, [])
 
   const loadSubscription = async () => {
-    try {
-      const data = await adminApi.getOrganizationSubscription()
-      setSubscription(data)
-    } catch (err) {
-      console.error(err)
-    } finally {
-      setLoading(false)
-    }
+  try {
+    const data = await adminApi.getOrganizationSubscription()
+    setSubscription(data)
+  } catch (err) {
+    console.error(err)
+  } finally {
+    setLoading(false)
   }
+}
+  const requestUpgrade = async () => {
+  try {
+    console.log("Subscription Data:", subscription)
 
+    await adminApi.createUpgradeRequest({
+      organization_id: subscription.organization_id,
+      current_plan: subscription.plan,
+      requested_plan: 'premium',
+      message
+    })
+
+    alert('Upgrade request submitted')
+  } catch (err: any) {
+    console.error(err)
+    console.log("Response:", err.response?.data)
+
+    alert(
+      JSON.stringify(
+        err.response?.data,
+        null,
+        2
+      )
+    )
+  }
+}
+if (loading) {
+  return <div>Loading...</div>
+}
+
+if (!subscription) {
+  return <div>No subscription data found</div>
+}
   return (
     <div className="fade-in">
       <div style={{ display: 'flex', alignItems: 'center', gap: 12, marginBottom: 24 }}>
@@ -32,6 +65,53 @@ export default function OrganizationSubscription() {
           <p style={{ fontSize: 12, color: 'var(--text-3)', margin: '2px 0 0' }}>Manage your organization's plan and billing</p>
         </div>
       </div>
+      
+
+
+      <div className="border rounded p-6">
+
+        <p>
+          <strong>Organization:</strong>{" "}
+          {subscription.name}
+        </p>
+
+        <p>
+          <strong>Plan:</strong>{" "}
+          {subscription.plan}
+        </p>
+
+        <p>
+          <strong>Billing Status:</strong>{" "}
+          {subscription.billing_status}
+        </p>
+
+        <p>
+          <strong>Max Users:</strong>{" "}
+          {subscription.max_users}
+        </p>
+        <div className="mt-6">
+
+  <h3 className="font-semibold mb-2">
+    Request Plan Upgrade
+  </h3>
+
+  <textarea
+    value={message}
+    onChange={(e) =>
+      setMessage(e.target.value)
+    }
+    placeholder="Reason for upgrade"
+    className="w-full border rounded p-3 mb-3"
+  />
+
+  <button
+    onClick={requestUpgrade}
+    className="bg-blue-600 text-white px-5 py-2 rounded"
+  >
+    Request Premium Upgrade
+  </button>
+</div>
+</div>
 
       <div className="card" style={{ maxWidth: 600, padding: 32 }}>
         {loading ? (
@@ -69,6 +149,7 @@ export default function OrganizationSubscription() {
                 <CheckCircle2 size={24} color="#3b82f6" />
               </div>
             </div>
+
 
             <div style={{ display: 'flex', flexDirection: 'column', gap: 16 }}>
               <div style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
@@ -126,6 +207,7 @@ export default function OrganizationSubscription() {
                   </button>
                 </div>
               </div>
+              
             )}
           </div>
         )}

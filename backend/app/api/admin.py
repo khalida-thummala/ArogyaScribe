@@ -413,7 +413,6 @@ def get_upgrade_requests(
 
 
 from fastapi import HTTPException
-
 @router.put("/upgrade-requests/{request_id}/approve")
 def approve_request(
     request_id: str,
@@ -438,12 +437,29 @@ def approve_request(
             detail="Request not found"
         )
 
+    # Mark request approved
     request.status = "approved"
 
-    db.commit()
-    db.refresh(request)
+    # Upgrade organization plan
+    organization = db.query(
+        Organization
+    ).filter(
+        Organization.organization_id ==
+        request.organization_id
+    ).first()
 
-    return request
+    if organization:
+        organization.subscription_plan = (
+            request.requested_plan
+        )
+
+    db.commit()
+
+    return {
+        "message": "Upgrade approved successfully",
+        "organization": organization.name,
+        "new_plan": organization.subscription_plan
+    }
 
 
 
@@ -802,11 +818,12 @@ def get_organization_subscription(
     ).first()
 
     return {
-        "name": organization.name,
-        "plan": organization.subscription_plan,
-        "billing_status": organization.billing_status,
-        "max_users": organization.max_users
-    }
+    "organization_id": organization.organization_id,
+    "name": organization.name,
+    "plan": organization.subscription_plan,
+    "billing_status": organization.billing_status,
+    "max_users": organization.max_users
+}
 
 class CreateDoctorRequest(BaseModel):
     full_name: str = Field(..., min_length=2, max_length=100)

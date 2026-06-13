@@ -1,5 +1,7 @@
 # ⚕️ ArogyaScribe
 
+> **Note:** This project, formerly known as MediScribe, was renamed to ArogyaScribe during development.
+
 **Live Deployment:** [https://mediscribe-kohl.vercel.app/](https://mediscribe-kohl.vercel.app/)
 
 **ArogyaScribe** is a production-grade, AI-powered clinical documentation platform built to reduce administrative burdens for healthcare professionals. By natively integrating advanced speech-to-text (**AssemblyAI**) and **Retrieval-Augmented Generation (RAG)** via GPT-4, ArogyaScribe acts as an intelligent medical scribe—listening to patient consultations and automatically structuring the dialogue into clinical SOAP notes. 

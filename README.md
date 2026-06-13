@@ -19,7 +19,33 @@ Crucially, ArogyaScribe operates as a **standalone, fully native architecture**,
 - 📄 **Dynamic Report Generation** — View, edit, and export clinical notes seamlessly in PDF and DOCX formats.
 - 📊 **Intelligent Analytics** — Real-time KPIs for clinic productivity and time-saving metrics.
 - 🛡️ **Hardened Audit Trail** — HIPAA-aligned event logging for all clinical actions.
-- 🔐 **Secure RBAC Authentication** — JWT-based Role-Based Access Control (Admin, Practitioner, Supervisor).
+- 🔐 **Secure RBAC Authentication** — JWT-based Role-Based Access Control.
+
+---
+
+## 🔄 System Workflow & Role Hierarchy
+
+ArogyaScribe operates with a strict hierarchy of roles, defining clear access boundaries across the platform:
+
+### 1. Super Admin (Platform Owner)
+- **Organization Management:** Creates Organizations by assigning them an email and password. Has exclusive authority to change Organization passwords.
+- **Global Dashboard:** Views all Organizations, their active subscription plans, doctors, and patients. Clicking on an Organization displays its specific doctors and patients.
+- **Plan Approvals:** Reviews and approves subscription plan upgrades (e.g., Basic to Premium) for Organizations after verifying payment.
+
+### 2. Organization (Clinic / Hospital Admin)
+- **Access:** Logs in using credentials provided by the Super Admin. *Note: Organizations cannot change their own password.*
+- **Staff Management:** Adds Doctors by assigning them an email and password. The Organization can reset or change Doctor passwords.
+- **Oversight:** Views all doctors and patients under their umbrella. Clicking on a specific doctor filters the view to show only that doctor's patients.
+- **Subscription Upgrades:** When the current plan limit is reached, the Organization submits an upgrade form to the Super Admin for approval.
+
+### 3. Doctor (Practitioner)
+- **Access:** Logs in using credentials provided by their Organization. *Note: Doctors cannot change their own password.*
+- **Patient Management:** Adds new Patients to the system.
+- **Clinical View:** Views only their assigned patients. Clicking on a particular patient opens all clinical records specific to that patient.
+
+### 4. Patient
+- **Access:** Patients independently sign up and create their own accounts using their email and password.
+- **Records View:** Logs in to securely check and review their own medical records.
 
 ---
 
@@ -80,9 +106,4 @@ The frontend will be accessible at `http://localhost:5173`.
 - **/frontend** — React/Vite web application housing the UI components, state management (Zustand), and data fetching.
 - **/database** — Assorted migration utilities and database design references.
 
----
 
-## 📄 License & Authors
-
-Developed by **Thummala Khalida** and **Gowthami Kanchi**.  
-*ArogyaScribe — Empowering Healthcare through AI.*

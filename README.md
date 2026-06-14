@@ -108,4 +108,9 @@ The frontend will be accessible at `http://localhost:5173`.
 - **/frontend** — React/Vite web application housing the UI components, state management (Zustand), and data fetching.
 - **/database** — Assorted migration utilities and database design references.
 
+---
 
+## 📄 License & Author
+
+Developed by **Thummala Khalida** and **Gowthami Kanchi**.  
+*ArogyaScribe — Empowering Healthcare through AI.*

@@ -5,7 +5,8 @@ import {
   Mic, FileText, Brain, Users, BarChart3, Shield,
   CheckCircle, ArrowRight, Star, Zap, Lock,
   ChevronRight, Clock, TrendingUp, Heart,
-  Stethoscope, Activity, Database, Cloud, Menu, X
+  Stethoscope, Activity, Database, Cloud, Menu, X,
+  Layers, Workflow, MessageSquare
 } from 'lucide-react'
 import { useState, useEffect } from 'react'
 
@@ -54,6 +55,8 @@ const FEATURES = [
   { icon: Users,    title: 'Patient Management',          desc: 'Full-featured EHR with medical history, allergies, medications, and comprehensive visit tracking.', color: '#059669', bg: '#ecfdf5' },
   { icon: BarChart3,title: 'Intelligent Analytics',       desc: 'Real-time KPIs and productivity trends to track time saved, consultation volumes, and clinical outcomes.', color: '#d97706', bg: '#fffbeb' },
   { icon: Shield,   title: 'HIPAA & GDPR Compliant',      desc: 'Enterprise-grade security with AES-256 encryption, JWT auth, RBAC, and comprehensive audit trails.', color: '#dc2626', bg: '#fef2f2' },
+  { icon: MessageSquare, title: 'Patient AI Portal',      desc: 'Patients can securely log in to view their reports and chat with an AI assistant regarding their records.', color: '#2563eb', bg: '#eff6ff' },
+  { icon: Layers,   title: 'Strict Role Hierarchy',       desc: 'Distinct dashboards and capabilities for Super Admins, Organizations, Doctors, and Patients.', color: '#7c3aed', bg: '#f5f3ff' },
 ]
 
 const STATS = [
@@ -82,7 +85,34 @@ const TECH_STACK = [
   { name: 'PostgreSQL',  icon: '🐘' }, { name: 'AWS',          icon: '☁️' },
 ]
 
-const NAV_LINKS = ['Features', 'How It Works', 'Security']
+const NAV_LINKS = ['Features', 'Workflows', 'How It Works', 'Security']
+
+const WORKFLOWS = [
+  {
+    id: 'rag',
+    title: 'Clinical RAG Engine',
+    desc: 'Retrieval-Augmented Generation using pgvector. Analyzes patient history and uploaded PDFs/images to ground AI decisions in factual medical records.',
+    color: '#0891b2'
+  },
+  {
+    id: 'radiology',
+    title: 'Radiology AI',
+    desc: 'Specialized DICOM/Image viewer that leverages GPT-4o Vision to instantly analyze X-Rays and MRI scans to aid diagnostic assessment.',
+    color: '#7c3aed'
+  },
+  {
+    id: 'voice',
+    title: 'Live Voice Dictation',
+    desc: 'Real-time websocket connection to AssemblyAI for high-fidelity medical transcription, capturing doctor-patient dialogue effortlessly.',
+    color: BLUE
+  },
+  {
+    id: 'ehr',
+    title: 'Hierarchical EHR',
+    desc: 'Organizations manage doctors, doctors manage patients, and patients can access their own secure dashboard to review clinical outcomes.',
+    color: '#059669'
+  }
+]
 
 /* ─── component ─────────────────────────────────────────────── */
 export default function LandingPage() {
@@ -320,8 +350,35 @@ export default function LandingPage() {
         </div>
       </section>
 
+      {/* ══════════ WORKFLOWS & ARCHITECTURE ══════════ */}
+      <section id="workflows" style={{ padding: 'clamp(56px,8vw,100px) clamp(16px,5vw,80px)', background: '#f8faff', borderTop: '1px solid #dce6f5' }}>
+        <div style={{ maxWidth: 1100, margin: '0 auto' }}>
+          <div style={{ textAlign: 'center', marginBottom: 52 }}>
+            <SectionBadge color={BLUE_DARK}><Workflow size={11} /> Project Architecture</SectionBadge>
+            <h2 style={{ fontSize: 'clamp(26px,4vw,44px)', fontWeight: 800, color: '#0f172a', marginTop: 16, marginBottom: 14, letterSpacing: '-0.03em' }}>
+              Advanced Medical <GradText>AI Workflows</GradText>
+            </h2>
+            <p style={{ fontSize: 15, color: '#4a6080', maxWidth: 600, margin: '0 auto', lineHeight: 1.8 }}>
+              A fully native architecture running seamlessly on our FastAPI backend—no third-party automation tools needed.
+            </p>
+          </div>
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit,minmax(240px,1fr))', gap: 24 }}>
+            {WORKFLOWS.map((wf) => (
+              <div key={wf.id} style={{ background: '#fff', borderRadius: 16, padding: 28, border: '1px solid #dce6f5', boxShadow: '0 4px 20px rgba(30,58,138,0.04)', position: 'relative', overflow: 'hidden', transition: 'transform 0.2s, box-shadow 0.2s' }}
+                onMouseEnter={e => { (e.currentTarget as HTMLDivElement).style.transform = 'translateY(-4px)'; (e.currentTarget as HTMLDivElement).style.boxShadow = '0 12px 32px rgba(30,58,138,0.08)' }}
+                onMouseLeave={e => { (e.currentTarget as HTMLDivElement).style.transform = 'translateY(0)'; (e.currentTarget as HTMLDivElement).style.boxShadow = '0 4px 20px rgba(30,58,138,0.04)' }}
+              >
+                <div style={{ position: 'absolute', top: 0, left: 0, width: '100%', height: 4, background: wf.color }} />
+                <h3 style={{ fontSize: 18, fontWeight: 800, color: '#0f172a', marginBottom: 12 }}>{wf.title}</h3>
+                <p style={{ fontSize: 14, color: '#4a6080', lineHeight: 1.7 }}>{wf.desc}</p>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
       {/* ══════════ HOW IT WORKS ══════════ */}
-      <section id="how-it-works" style={{ padding: 'clamp(56px,8vw,100px) clamp(16px,5vw,80px)', background: '#f4f7fb' }}>
+      <section id="how-it-works" style={{ padding: 'clamp(56px,8vw,100px) clamp(16px,5vw,80px)', background: '#fff' }}>
         <div style={{ maxWidth: 1100, margin: '0 auto' }}>
           <div style={{ textAlign: 'center', marginBottom: 52 }}>
             <SectionBadge color={BLUE_MID}><Zap size={11} /> Simple Workflow</SectionBadge>
